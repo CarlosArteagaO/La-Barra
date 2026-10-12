@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
+<meta name="description" content="La Barra — carta de cócteles de autor para disfrutar en casa.">
+<title>La Barra | Carta de cócteles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="topline"><span>COCTELERÍA DE CASA</span><span class="line"></span><span>DESDE LA BARRA</span></div>
+  <div class="brand-mark">LB</div>
+  <p class="eyebrow">BUENOS TRAGOS · BUENAS HISTORIAS</p>
+  <h1>La <em>Barra</em></h1>
+  <p class="intro">Una selección de clásicos y favoritos, preparados con calma y servidos como corresponde.</p>
+  <a class="scroll-link" href="#carta">EXPLORAR LA CARTA <span>↓</span></a>
+</header>
+<main id="carta">
+  <section class="welcome">
+    <p class="eyebrow">LA CARTA</p>
+    <h2>¿Qué se te antoja?</h2>
+    <p>Elige por espíritu, por sabor o simplemente por curiosidad.</p>
+  </section>
+  <nav class="filters" aria-label="Filtrar cócteles">
+    <button class="filter active" data-filter="todos">Todos</button>
+    <button class="filter" data-filter="dulce">Dulces</button>
+    <button class="filter" data-filter="cítrico">Cítricos</button>
+    <button class="filter" data-filter="café">Con café</button>
+    <button class="filter" data-filter="refrescante">Refrescantes</button>
+    <button class="filter" data-filter="aperitivo">Aperitivos</button>
+    <button class="filter" data-filter="frutal">Frutales</button>
+    <button class="filter" data-filter="vino">Vinos</button>
+    <button class="filter" data-filter="cerveza">Cervezas</button>
+  </nav>
+  <section class="cocktail-grid" id="cocktails" aria-live="polite"></section>
+  <section class="house-note">
+    <div class="note-symbol">✦</div>
+    <p class="eyebrow">UN CONSEJO DE LA CASA</p>
+    <h2>El mejor cóctel<br><em>es el que se comparte.</em></h2>
+    <p>¿No sabes qué elegir? Cuéntame qué sabores te gustan y encontramos tu próximo favorito.</p>
+  </section>
+</main>
+<footer>
+  <div class="footer-brand">La <em>Barra</em></div>
+  <p>Hecho en casa. Servido con cariño.</p>
+  <span class="footer-rule"></span>
+  <small>DISFRUTA CON RESPONSABILIDAD</small>
+</footer>
+<dialog id="recipe-dialog">
+  <button class="close" aria-label="Cerrar receta">×</button>
+  <div id="recipe-content"></div>
+</dialog>
+<script src="script.js"></script>
+</body>
+</html>
