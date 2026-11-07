@@ -23,3 +23,6 @@ NOTAS
 
 
 Versión actualizada: se añadieron Piscola, Mojito, Aperol Spritz, Ramazzotti Rosato con arándanos y Ramazzotti Violetto con arándanos y romero, Tom Collins, Tanqueray Pink & Tonic, Vino y Cervezas disponibles. Amaretto Sour ya estaba incluido.
+
+
+Actualización de navegación: la carta inicia mostrando las categorías. Al seleccionar una categoría se muestran sus tragos; cada trago abre su receta. El botón «Volver a categorías» permite regresar al inicio de la carta.

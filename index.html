@@ -25,20 +25,18 @@
     <h2>¿Qué se te antoja?</h2>
     <p>Explora la carta por tipo de bebida y encuentra tu próximo favorito.</p>
   </section>
-  <nav class="filters" aria-label="Filtrar por tipo de bebida">
-    <button class="filter active" data-filter="Todos">Todos</button>
-    <button class="filter" data-filter="Gin">Gin</button>
-    <button class="filter" data-filter="Pisco">Pisco</button>
-    <button class="filter" data-filter="Ron">Ron</button>
-    <button class="filter" data-filter="Vodka">Vodka</button>
-    <button class="filter" data-filter="Tequila">Tequila</button>
-    <button class="filter" data-filter="Aperitivos">Aperitivos</button>
-    <button class="filter" data-filter="Licores">Licores</button>
-    <button class="filter" data-filter="Bajativos">Bajativos</button>
-    <button class="filter" data-filter="Vinos">Vinos</button>
-    <button class="filter" data-filter="Cervezas">Cervezas</button>
+  <nav class="filters category-grid" aria-label="Elegir categoría de bebida">
+    <button class="filter category-card" data-filter="Gin" type="button"><img src="images/gin.png" alt=""><span>Gin</span></button>
+    <button class="filter category-card" data-filter="Pisco" type="button"><img src="images/pisco.png" alt=""><span>Pisco</span></button>
+    <button class="filter category-card" data-filter="Ron" type="button"><img src="images/ron.png" alt=""><span>Ron</span></button>
+    <button class="filter category-card" data-filter="Vodka" type="button"><img src="images/vodka.png" alt=""><span>Vodka</span></button>
+    <button class="filter category-card" data-filter="Aperitivos" type="button"><img src="images/aperitivos.png" alt=""><span>Aperitivos</span></button>
+    <button class="filter category-card" data-filter="Licores" type="button"><img src="images/licores.png" alt=""><span>Licores</span></button>
+    <button class="filter category-card" data-filter="Bajativos" type="button"><img src="images/bajativos.png" alt=""><span>Bajativos</span></button>
+    <button class="filter category-card" data-filter="Vinos" type="button"><img src="images/vinos.png" alt=""><span>Vinos</span></button>
+    <button class="filter category-card" data-filter="Cervezas" type="button"><img src="images/cervezas.png" alt=""><span>Cervezas</span></button>
   </nav>
-  <section class="cocktail-grid" id="cocktails" aria-live="polite"></section>
+  <section class="cocktail-grid" id="cocktails" aria-live="polite" hidden></section>
   <section class="house-note">
     <div class="note-symbol">✦</div>
     <p class="eyebrow">UN CONSEJO DE LA CASA</p>

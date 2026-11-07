@@ -20,7 +20,7 @@ const drinks = [
  {name:"Tom Collins",category:"Gin",number:"18",desc:"Gin, limón y soda en un trago largo y chispeante.",tags:["cítrico","refrescante"],profile:"Cítrico · Seco · Burbujeante",ingredients:["50 ml de gin","25 ml de jugo de limón","15 ml de jarabe de goma","Soda para completar","Hielo","Rodaja de limón"],method:["Agrega gin, limón y jarabe a una coctelera con hielo.","Bate brevemente y cuela en un vaso alto con hielo fresco.","Completa con soda.","Remueve con cuidado y decora con limón."],tip:"Prueba antes de servir y ajusta el jarabe si el limón está especialmente ácido."},
  {name:"Tanqueray Pink & Tonic",category:"Gin",number:"19",desc:"Tu gin rosado Tanqueray, acompañado de tónica y frutos rojos para un cóctel fresco, frutal y de color atractivo.",tags:["frutal","refrescante"],profile:"Frutal · Cítrico · Burbujeante",ingredients:["45 ml de gin Tanqueray Pink (gin rosado)","120–150 ml de agua tónica fría","Un toque de jugo de limón, opcional","Hielo abundante","Frambuesas o frutillas para decorar, opcional"],method:["Llena una copa balón o vaso alto con hielo.","Añade el Tanqueray Pink.","Completa con agua tónica fría y agrega unas gotas de limón si te gusta más cítrico.","Remueve una sola vez y decora con frambuesas o frutillas."],tip:"Prueba primero con tónica clásica para apreciar el perfil del gin; si prefieres más dulzor y color, usa tónica rosada."},
  {name:"Vino",category:"Vinos",number:"20",desc:"Una copa de vino, servida a la temperatura adecuada.",tags:["vino"],profile:"Según variedad · Para disfrutar sin prisa",ingredients:["Vino tinto o blanco disponible","Copa adecuada"],method:["Elige la variedad disponible.","Sirve una medida moderada en una copa limpia.","Como orientación, sirve los blancos frescos y los tintos ligeramente frescos, no demasiado calientes."],tip:"Consulta qué etiqueta hay disponible en La Barra ese día."},
- {name:"Cervezas disponibles",category:"Cervezas",number:"21",desc:"Selección de cervezas frías de la casa.",tags:["cerveza"],profile:"Disponibilidad de la casa",ingredients:["Cervezas disponibles"],method:["Servir bien fría."],tip:"Una cerveza fría, sin complicaciones."}
+ {name:"Cervezas disponibles",category:"Cervezas",number:"21",desc:"Cervezas frías para disfrutar en casa.",tags:["cerveza"],profile:"Disponibilidad de la casa",ingredients:["Cervezas frías disponibles en casa"],method:["Elige tu favorita y sírvela bien fría."],tip:"Simplemente disfruta bien fría."}
 
  ,{name:"Blue Curaçao",category:"Bajativos",number:"22",desc:"Licor de naranja de color azul intenso, ideal para dar un toque cítrico y vistoso.",tags:["naranja"],profile:"Cítrico · Naranja",ingredients:["Blue Curaçao Tres Plumas","Hielo, opcional"],method:["Sirve una medida pequeña en un vaso corto.","También puedes servirlo sobre hielo."],tip:"Su color y sabor también funcionan muy bien en cócteles."}
  ,{name:"Cacao",category:"Bajativos",number:"23",desc:"Licor dulce con notas profundas de cacao.",tags:["chocolate"],profile:"Dulce · Cacao",ingredients:["Licor de Cacao Tres Plumas","Hielo, opcional"],method:["Sirve una medida pequeña en un vaso corto.","Disfrútalo solo o con hielo."],tip:"Ideal para cerrar la comida con un toque dulce."}
@@ -30,17 +30,81 @@ const drinks = [
  ,{name:"Melón",category:"Bajativos",number:"27",desc:"Licor frutal de melón, dulce y aromático.",tags:["frutal"],profile:"Frutal · Dulce",ingredients:["Licor de Melón Tres Plumas","Hielo, opcional"],method:["Sirve una medida pequeña bien fría.","Puedes servirlo solo o sobre hielo."],tip:"Una opción frutal y fresca para la sobremesa."}
 
 ];
-const grid=document.querySelector("#cocktails"), dialog=document.querySelector("#recipe-dialog"), content=document.querySelector("#recipe-content");
-const categories=["Todos","Gin","Pisco","Ron","Vodka","Tequila","Aperitivos","Licores","Bajativos","Vinos","Cervezas"];
-const photo="https://images.unsplash.com/photo-1513558161293-cdaf765edfd47?auto=format&fit=crop&w=1000&q=85";
-function render(filter="Todos"){
- grid.innerHTML="";
- drinks.filter(d=>filter==="Todos"||d.category===filter).forEach(d=>{
-  const card=document.createElement("article");card.className="cocktail-card";card.tabIndex=0;
-  card.innerHTML=`<div class="drink-photo" role="img" aria-label="${d.name}" style="background-image:linear-gradient(0deg,#100e0bd9,transparent 65%),url('${photo}')"><span>${d.category}</span></div><span class="card-number">${d.number} / LA BARRA</span><h3>${d.name}</h3><p class="desc">${d.desc}</p><span class="view-recipe">Ver detalle ↗</span>`;
-  const open=()=>showRecipe(d);card.addEventListener("click",open);card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}});grid.appendChild(card)
- })
+const grid=document.querySelector("#cocktails");
+const dialog=document.querySelector("#recipe-dialog");
+const content=document.querySelector("#recipe-content");
+const categoryNav=document.querySelector(".filters");
+const categoryNames=["Gin","Pisco","Ron","Vodka","Aperitivos","Licores","Bajativos","Vinos","Cervezas"];
+const categoryIntro={
+ Gin:"Cócteles frescos y aromáticos preparados con gin.",
+ Pisco:"Clásicos y favoritos preparados con pisco.",
+ Ron:"Preparaciones frescas y tropicales con ron.",
+ Vodka:"Cócteles versátiles, suaves y llenos de carácter.",
+ Aperitivos:"Opciones ligeras y aromáticas para comenzar.",
+ Licores:"Sabores dulces, intensos y para disfrutar sin prisa.",
+ Bajativos:"Pequeñas copas para cerrar la sobremesa.",
+ Vinos:"Las variedades disponibles para disfrutar en casa.",
+ Cervezas:"Revisa las variedades frías disponibles en casa."
+};
+let currentCategory=null;
+let categoryHeader=document.querySelector("#category-header");
+if(!categoryHeader){
+ categoryHeader=document.createElement("section");
+ categoryHeader.id="category-header";
+ categoryHeader.className="category-header";
+ categoryHeader.hidden=true;
+ categoryHeader.innerHTML=`<button type="button" class="back-categories">← Volver a categorías</button><p class="eyebrow">LA BARRA · CATEGORÍA</p><h2 id="category-title"></h2><p id="category-description"></p>`;
+ categoryNav.insertAdjacentElement("afterend",categoryHeader);
 }
-function showRecipe(d){content.innerHTML=`<span class="recipe-kicker">${d.number} · ${d.category} · ${d.profile}</span><h2>${d.name}</h2><div class="recipe-photo" style="background-image:linear-gradient(0deg,#100e0b55,transparent),url('${photo}')"></div><p class="recipe-desc">${d.desc}</p><div class="recipe-columns"><div><h3>Ingredientes</h3><ul>${d.ingredients.map(x=>`<li>${x}</li>`).join("")}</ul></div><div><h3>Preparación</h3><ol>${d.method.map(x=>`<li>${x}</li>`).join("")}</ol></div></div><p class="recipe-tip"><strong>Tip de la casa:</strong> ${d.tip}</p>`;dialog.showModal()}
-document.querySelector(".filters").addEventListener("click",e=>{const b=e.target.closest(".filter");if(!b)return;document.querySelector(".filter.active")?.classList.remove("active");b.classList.add("active");render(b.dataset.filter)});
-document.querySelector(".close").addEventListener("click",()=>dialog.close());dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});render();
+function showCategories(){
+ currentCategory=null;
+ categoryNav.hidden=false;
+ categoryHeader.hidden=true;
+ grid.innerHTML="";
+ grid.hidden=true;
+}
+function showCategory(name){
+ currentCategory=name;
+ categoryNav.hidden=true;
+ categoryHeader.hidden=false;
+ grid.hidden=false;
+ document.querySelector("#category-title").textContent=name;
+ document.querySelector("#category-description").textContent=categoryIntro[name]||"Explora las opciones de esta categoría.";
+ render(name);
+ categoryHeader.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function render(category){
+ grid.innerHTML="";
+ const items=drinks.filter(d=>d.category===category);
+ if(!items.length){
+  grid.innerHTML='<p class="empty-category">Pronto agregaremos opciones a esta categoría.</p>';
+  return;
+ }
+ items.forEach(d=>{
+  const card=document.createElement("article");
+  card.className="cocktail-card";card.tabIndex=0;card.setAttribute("role","button");
+  card.innerHTML=`<span class="card-number">${d.number} / ${d.category.toUpperCase()}</span><h3>${d.name}</h3><p class="desc">${d.desc}</p><span class="view-recipe">Ver receta ↗</span>`;
+  const open=()=>showRecipe(d);
+  card.addEventListener("click",open);
+  card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+  grid.appendChild(card);
+ });
+}
+function showRecipe(d){
+ content.innerHTML=`<span class="recipe-kicker">${d.number} · ${d.category} · ${d.profile}</span><h2>${d.name}</h2><p class="recipe-desc">${d.desc}</p><div class="recipe-columns"><div><h3>Ingredientes</h3><ul>${d.ingredients.map(x=>`<li>${x}</li>`).join("")}</ul></div><div><h3>Preparación</h3><ol>${d.method.map(x=>`<li>${x}</li>`).join("")}</ol></div></div><p class="recipe-tip"><strong>Tip de la casa:</strong> ${d.tip}</p>`;
+ dialog.showModal();
+}
+categoryNav.addEventListener("click",e=>{
+ const button=e.target.closest(".category-card");
+ if(!button)return;
+ const name=button.dataset.filter;
+ if(name==="Todos"){showCategories();return;}
+ showCategory(name);
+});
+categoryHeader.querySelector(".back-categories").addEventListener("click",()=>{
+ showCategories();
+ document.querySelector("#carta").scrollIntoView({behavior:"smooth"});
+});
+document.querySelector(".close").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close();});
+showCategories();
